@@ -6,51 +6,17 @@
 }
 
 body {
-  padding: 12px;
   background-color: #f4f4f4;
+}
+
+li {
+  list-style: none;
 }
 
 .container-song {
   margin: 0 auto;
-  max-width: 300px;
-}
-
-.title {
-  text-align: center;
-  margin: 20px 0;
-  font-size: 2rem;
-  color: #333;
-}
-
-.song-container {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  max-width: 300px;
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
-}
-
-.song-container:hover {
-  transform: scale(1.05);
-}
-
-.song-title {
-  margin-bottom: 10px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.song-artist {
-  margin-bottom: 8px;
-  font-size: 1rem;
-  color: #666;
-}
-
-.song-album {
-  font-size: 0.9rem;
-  color: #999;
+  max-width: 700px;
+  display: flex;
+  justify-content: center;  
+  gap: 2rem;
 }

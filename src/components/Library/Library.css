@@ -1,0 +1,8 @@
+.library-container {
+  width: 100%;
+  max-width: 300px;
+}
+
+.song-message {
+  text-align: center;
+}
