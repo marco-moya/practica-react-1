@@ -1,0 +1,27 @@
+.search-bar {
+  width: 50%;
+  min-width: 300px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  min-width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px ;
+}
+
+.search-button {
+  height: 100%;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+}

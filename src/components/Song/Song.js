@@ -1,15 +1,32 @@
 import React from "react";
 import "./Song.css";
 
-const Song = ({info = {}}) => {
-  const { title = "Unknown", artist = "Unknown", album = "Unknown" } = info
+const Song = ({ info, onRemove  }) => {
+  if (!info) return null;
+
+  const {
+    id,
+    name = "Unknown",
+    artists = [],
+    album = { name: "Unknown", images: [] },
+  } = info;
+
   return (
-    <li className="song-container">
-      <h2 className="song-title">{title}</h2>
-      <p className="song-artist">{artist}</p>
-      <p className="song-album">{album}</p>
-    </li>
+      <li className="song-item">
+        <img src={album.images[1].url} alt={album.name} />
+        <div className="song-details">
+          <h3 className="song-title">{name}</h3>
+          <p className="song-artist">
+            <strong>Artist:</strong> {artists.map((a) => a.name).join(", ")}
+          </p>
+          <p className="song-album">
+            <strong>Album:</strong> {album.name}
+          </p>
+        </div>
+        <button className="song-remove-button" onClick={() => onRemove(id)}>➖</button>
+      </li>
   );
-}
+};
 
 export default Song;
+
