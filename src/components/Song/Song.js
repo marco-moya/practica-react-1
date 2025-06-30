@@ -1,5 +1,13 @@
 import React from "react";
-import "./Song.css";
+import {
+  SongItem,
+  SongItemImage,
+  SongInfoContainer,
+  SongTitle,
+  SongArtist,
+  SongAlbum,
+  SongRemoveButton
+} from "./styles.js";
 
 const Song = ({ info, onRemove  }) => {
   if (!info) return null;
@@ -12,19 +20,19 @@ const Song = ({ info, onRemove  }) => {
   } = info;
 
   return (
-      <li className="song-item">
-        <img src={album.images[1].url} alt={album.name} />
-        <div className="song-details">
-          <h3 className="song-title">{name}</h3>
-          <p className="song-artist">
+      <SongItem>
+        <SongItemImage src={album.images[1].url} alt={album.name} />
+        <SongInfoContainer>
+          <SongTitle>{name}</SongTitle>
+          <SongArtist>
             <strong>Artist:</strong> {artists.map((a) => a.name).join(", ")}
-          </p>
-          <p className="song-album">
+          </SongArtist>
+          <SongAlbum>
             <strong>Album:</strong> {album.name}
-          </p>
-        </div>
-        <button className="song-remove-button" onClick={() => onRemove(id)}>➖</button>
-      </li>
+          </SongAlbum>
+        </SongInfoContainer>
+        <SongRemoveButton onClick={() => onRemove(id)}>➖</SongRemoveButton>
+      </SongItem>
   );
 };
 

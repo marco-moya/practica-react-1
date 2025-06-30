@@ -1,22 +1,27 @@
 import React from "react";
 import Song from "../Song/Song";
-import "./Library.css";
+import {
+  LibraryContainer,
+  LibraryTitle,
+  LibraryList,
+  SongMessage
+} from "./styles.js";
 
 const Library = ({songs, removeFromLibrary }) => {
   return (
-    <div className="library-container">
-      <h2>Mi Biblioteca</h2>
-      <ul className="library-list">
+    <LibraryContainer className="library-container">
+      <LibraryTitle>Mi Biblioteca</LibraryTitle>
+      <LibraryList className="library-list">
         {songs.length === 0 ? 
-          <p className="song-message">No hay canciones en tu biblioteca</p>
+          <SongMessage className="song-message">No hay canciones en tu biblioteca</SongMessage>
           : 
           songs.map((song) => (
             <React.Fragment key={song.id}>
               <Song info={song} onRemove={removeFromLibrary} />
             </React.Fragment>
           ))}
-      </ul>
-    </div>
+      </LibraryList>
+    </LibraryContainer>
   );
 }
 

@@ -1,6 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./SearchResults.css";
+import { 
+  Main,
+  ArtistInfo,
+  AlbumList,
+  Album,
+  Ribbon,
+  AlbumHeader,
+  AlbumCover,
+  AlbumDetails,
+  SongList,
+  SongListItem,
+  SongsListInfo,
+  SongListAddButton 
+} from "./styles.js";
+
 const SearchResults = ({
   artist,
   albums,
@@ -15,50 +29,49 @@ const SearchResults = ({
   };
 
   return (
-    <main className="search-results">
+    <Main>
       {error && <p>{error}</p>}
 
       {artist && (
-        <section className="artist-info">
+        <ArtistInfo>
           <h2>Resultados para: {artist.name}</h2>
-        </section>
+        </ArtistInfo>
       )}
 
       {albums.length > 0 && (
-        <section className="albums-list">
+        <AlbumList>
           {albums.map((album) => (
-            <div key={album.id} className="album">
-              <div className="album-header" onClick={() => toggleAlbum(album.id)}>
-                <img
+            console.log(album.album_type),
+            <Album key={album.id} type={album.album_type}>
+              <Ribbon type={album.album_type}>{album.album_type.toUpperCase()}</Ribbon>
+              <AlbumHeader onClick={() => toggleAlbum(album.id)}>
+                <AlbumCover
                   src={album.images[0]?.url}
                   alt={album.name}
-                  width={120}
-                  height={120}
-                  className="album-cover"
                 />
-                <div className="album-details">
+                <AlbumDetails>
                   <h3>{album.name}</h3>
                   <p>{album.release_date}</p>
-                </div>
-              </div>
+                </AlbumDetails>
+              </AlbumHeader>
 
               {expandedAlbumId === album.id && (
-                <ul className="songs-list">
+                <SongList>
                   {songsByAlbum[album.id]?.map((song) => (
-                    <li key={song.id} className="songs-list-item">
-                      <div className="songs-list-info">
+                    <SongListItem key={song.id} >
+                      <SongsListInfo>
                         <Link to={`/song/${song.id}`}><strong>{song.name}</strong></Link>
-                      </div>
-                      <button className="song-list-add-button" onClick={() => addToLibrary(song, album)}>➕</button>
-                    </li>
+                      </SongsListInfo>
+                      <SongListAddButton  onClick={() => addToLibrary(song, album)}>➕</SongListAddButton>
+                    </SongListItem>
                   ))}
-                </ul>
+                </SongList>
               )}
-            </div>
+            </Album>
           ))}
-        </section>
+        </AlbumList>
       )}
-    </main>
+    </Main>
   );
 };
 

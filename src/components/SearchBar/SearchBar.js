@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./SearchBar.css";
+import {
+  SearchBarContainer, 
+  SearchInput, 
+  LoadingText, 
+  SearchButton
+} from "./styles.js";
 
 const SearchBar = ({ onSearch }) => {
   const [artist, setArtist] = useState("");
@@ -31,24 +36,23 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="search-bar">
-      <input
+    <SearchBarContainer>
+      <SearchInput
         type="text"
         placeholder="Buscar canciones, artistas o álbumes..."
         value={artist}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        className="search-input"
         disabled={loading}
       />
       {loading ? (
-        <span className="loading-text">Cargando...</span>
+        <LoadingText>Cargando...</LoadingText>
       ) : (
-        <button className="search-button" onClick={handleSearch}>
+        <SearchButton onClick={handleSearch}>
           Buscar
-        </button>
+        </SearchButton>
       )}
-    </div>
+    </SearchBarContainer>
   );
 };
 

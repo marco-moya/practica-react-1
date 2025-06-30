@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "./SongDetail.css";
+import {
+  SongDetailCard,
+  SongDetailContainer,
+  SongDetailCardImage,
+  SongDetailTitle,
+  SongDetailArtist,
+  SongDetailAlbum
+} from "./styles.js";
 
 const SongDetail = ({ token }) => {
   const { id } = useParams();
@@ -27,14 +34,14 @@ const SongDetail = ({ token }) => {
   if (!song) return <p>Cargando...</p>;
 
   return (
-    <main className="song-detail">
-      <div className="song-detail-container">
-        <img src={song.album.images[1]?.url} alt={song.album.name} />
-        <h2 className="song-detail-title">{song.name}</h2>
-        <p className="song-detail-artist">Artista: {song.artists.map((a) => a.name).join(", ")}</p>
-        <p className="song-detail-album">Álbum: {song.album.name}</p>
-      </div>
-    </main>
+    <SongDetailCard>
+      <SongDetailContainer>
+        <SongDetailCardImage src={song.album.images[1]?.url} alt={song.album.name} />
+        <SongDetailTitle>{song.name}</SongDetailTitle>
+        <SongDetailArtist>Artista: {song.artists.map((a) => a.name).join(", ")}</SongDetailArtist>
+        <SongDetailAlbum>Álbum: {song.album.name}</SongDetailAlbum>
+      </SongDetailContainer>
+    </SongDetailCard>
   );
 };
 

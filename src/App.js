@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Modal from "react-modal";
 import Header from "./components/Header/Header";
 import Library from "./components/Library/Library";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchResults from "./components/SearchResults/SearchResults";
 import SongDetail from "./components/SongDetail/SongDetail";
-import "./App.css";
-import "./modalStyles.css";
+import GlobalStyles from "./GlobalStyles";
+import theme from "./theme";
+import { ThemeProvider } from "styled-components";
 
 Modal.setAppElement("#root");
 
@@ -114,6 +115,7 @@ const App = () => {
       setArtist(fetchedArtist);
       const fetchedAlbums = await fetchAlbums(fetchedArtist.id);
       setAlbums(fetchedAlbums);
+      console.log(fetchedAlbums);
 
       const allSongs = {};
       for (const album of fetchedAlbums) {
@@ -147,50 +149,43 @@ const App = () => {
     setTimeout(() => setModalSongRemoved(false), 2000);
   };
 
-
-  const navigate = useNavigate();
-
   return (
-    <>
-      <Modal isOpen={modalSongAdded} className="modal-content" overlayClassName="modal-overlay">
-        <p>Biblioteca actualizada</p>
-      </Modal>
-      <Modal isOpen={modalSongAlreadyAdded} className="modal-content" overlayClassName="modal-overlay">
-        <p>La canción ya esta en tu biblioteca</p>
-      </Modal>
-      <Modal isOpen={modalSongRemoved} className="modal-content" overlayClassName="modal-overlay">
-        <p>Canción eliminada</p>
-      </Modal>
+    <ThemeProvider theme={theme}>
+      <>
+        <GlobalStyles />
+        <Modal isOpen={modalSongAdded} className="modal-content" overlayClassName="modal-overlay">
+          <p>Biblioteca actualizada</p>
+        </Modal>
+        <Modal isOpen={modalSongAlreadyAdded} className="modal-content" overlayClassName="modal-overlay">
+          <p>La canción ya esta en tu biblioteca</p>
+        </Modal>
+        <Modal isOpen={modalSongRemoved} className="modal-content" overlayClassName="modal-overlay">
+          <p>Canción eliminada</p>
+        </Modal>
 
+        <Header />
+        <SearchBar onSearch={handleSearch} />
 
-      <Header />
-
-      <div style={{ display: "flex", gap: "10px", padding: "10px", justifyContent:"space-between" }}>
-        <button onClick={() => navigate(-1)}>⬅ Volver</button>
-        <button onClick={() => navigate("/library")}>🎧 Ver Biblioteca</button>
-      </div>
-
-      <SearchBar onSearch={handleSearch} />
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <SearchResults
-              artist={artist}
-              albums={albums}
-              songsByAlbum={songsByAlbum}
-              addToLibrary={addToLibrary}
-              expandedAlbumId={expandedAlbumId}
-              setExpandedAlbumId={setExpandedAlbumId}
-              error={error}
-            />
-          }
-        />
-        <Route path="/song/:id" element={token ? <SongDetail token={token} /> : <p>Loading token...</p>} />
-        <Route path="/library" element={<Library songs={library} removeFromLibrary={removeFromLibrary} />} />
-      </Routes>
-    </>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <SearchResults
+                artist={artist}
+                albums={albums}
+                songsByAlbum={songsByAlbum}
+                addToLibrary={addToLibrary}
+                expandedAlbumId={expandedAlbumId}
+                setExpandedAlbumId={setExpandedAlbumId}
+                error={error}
+              />
+            }
+          />
+          <Route path="/song/:id" element={token ? <SongDetail token={token} /> : <p>Loading token...</p>} />
+          <Route path="/library" element={<Library songs={library} removeFromLibrary={removeFromLibrary} />} />
+        </Routes>
+      </>
+    </ThemeProvider>
   );
 };
 
