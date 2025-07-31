@@ -9,30 +9,31 @@ import {
   SongRemoveButton
 } from "./styles.js";
 
-const Song = ({ info, onRemove  }) => {
+const Song = ({ info, onRemove }) => {
+  
   if (!info) return null;
 
   const {
     id,
-    name = "Unknown",
-    artists = [],
+    title = info.title || "Unknown",
+    artist = info.artist || "Unknown",
     album = { name: "Unknown", images: [] },
   } = info;
 
   return (
-      <SongItem>
-        <SongItemImage src={album.images[1].url} alt={album.name} />
-        <SongInfoContainer>
-          <SongTitle>{name}</SongTitle>
-          <SongArtist>
-            <strong>Artist:</strong> {artists.map((a) => a.name).join(", ")}
-          </SongArtist>
-          <SongAlbum>
-            <strong>Album:</strong> {album.name}
-          </SongAlbum>
-        </SongInfoContainer>
-        <SongRemoveButton onClick={() => onRemove(id)}>➖</SongRemoveButton>
-      </SongItem>
+    <SongItem>
+      <SongItemImage src={album.images[1]?.url} alt={album.name} />
+      <SongInfoContainer>
+        <SongTitle>{title}</SongTitle>
+        <SongArtist>
+          <strong>Artist:</strong> {artist}
+        </SongArtist>
+        <SongAlbum>
+          <strong>Album:</strong> {album.name}
+        </SongAlbum>
+      </SongInfoContainer>
+      <SongRemoveButton onClick={() => onRemove(id)}>➖</SongRemoveButton>
+    </SongItem>
   );
 };
 
