@@ -1,4 +1,4 @@
-import styles from "styled-components";
+import styles, { keyframes } from "styled-components";
 
 const Main = styles.main`
   width: 100%;
@@ -7,6 +7,34 @@ const Main = styles.main`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+`;
+
+const spin = keyframes`
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Spinner = styles.div`
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    padding-bottom: 1rem;
+  }
+
+  div {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: ${spin} 1s linear infinite;
+    margin-bottom: 1re;
+  }
 `;
 
 const ArtistInfo = styles.section`
@@ -122,6 +150,7 @@ const SongListAddButton = styles.button`
   
 export {
   Main,
+  Spinner,
   ArtistInfo,
   AlbumList,
   Album,

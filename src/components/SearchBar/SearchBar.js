@@ -1,30 +1,29 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchSongs } from "../../redux/slices/thunk.js";
 import {
   SearchBarContainer, 
   SearchInput, 
-  LoadingText, 
   SearchButton
 } from "./styles.js";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = () => {
   const [artist, setArtist] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => setArtist(e.target.value);
 
   const handleSearch = async () => {
     if (artist.trim() !== "") {
-      setLoading(true);
       try {
-        await onSearch(artist);
+        dispatch(fetchSongs(artist));
         navigate("/");
         setArtist("");
       } catch (error) {
         console.error("Error al buscar:", error);
       } finally {
-        setLoading(false);
       }
     }
   };
@@ -43,15 +42,10 @@ const SearchBar = ({ onSearch }) => {
         value={artist}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        disabled={loading}
       />
-      {loading ? (
-        <LoadingText>Cargando...</LoadingText>
-      ) : (
-        <SearchButton onClick={handleSearch}>
-          Buscar
-        </SearchButton>
-      )}
+      <SearchButton onClick={handleSearch}>
+        Buscar
+      </SearchButton>
     </SearchBarContainer>
   );
 };

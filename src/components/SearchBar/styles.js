@@ -15,14 +15,6 @@ const SearchBarContainer = styled.div`
   border-radius: 5px ;
 `;
 
-const LoadingText = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
 const SearchButton = styled.button`
   height: 100%;
   padding: 8px 12px;
@@ -46,6 +38,5 @@ const SearchButton = styled.button`
 export { 
   SearchBarContainer, 
   SearchInput, 
-  LoadingText, 
   SearchButton
 };

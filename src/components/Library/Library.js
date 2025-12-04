@@ -1,7 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { removeSong } from "../../redux/slices/librarySlice.js";
 import Song from "../Song/Song";
 import {
   LibraryContainer,
@@ -10,15 +11,16 @@ import {
   SongMessage
 } from "./styles.js";
 
-const Library = ({ songs }) => {
+const Library = () => {
+  const songs = useSelector((state) => state.library.myLibrary);
   const [modalSongRemoved, setModalSongRemoved] = useState(false);
 
   const dispatch = useDispatch();
 
   const removeFromLibrary = (songId) => {
-  dispatch({ type: "REMOVE_SONG", payload: songId });
-  setModalSongRemoved(true);
-  setTimeout(() => setModalSongRemoved(false), 2000);
+    dispatch(removeSong(songId));
+    setModalSongRemoved(true);
+    setTimeout(() => setModalSongRemoved(false), 2000);
   };
 
   return (

@@ -1,10 +1,11 @@
-import React, { useState }from "react";
+import { useState }from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addSong } from "../../redux/libraryActions.js";
+import { addSong } from "../../redux/slices/librarySlice.js";
 import { 
   Main,
+  Spinner,
   ArtistInfo,
   AlbumList,
   Album,
@@ -18,50 +19,51 @@ import {
   SongListAddButton 
 } from "./styles.js";
 
-const SearchResults = ({
-  artist,
-  albums,
-  songsByAlbum,
-  expandedAlbumId,
-  setExpandedAlbumId,
-  error,
-  }) => {
+const SearchResults = () => {
 
-    const [modalSongAdded, setModalSongAdded] = useState(false);
-    const [modalSongAlreadyAdded, setModalSongAlreadyAdded] = useState(false);
+  const [modalSongAdded, setModalSongAdded] = useState(false);
+  const [modalSongAlreadyAdded, setModalSongAlreadyAdded] = useState(false);
+  const [expandedAlbumId, setExpandedAlbumId] = useState(null);
 
-    const dispatch = useDispatch();
-    const library = useSelector((state) => state.library);
+  const dispatch = useDispatch();
+  const library = useSelector((state) => state.library.myLibrary);
+  const { results, loading, error } = useSelector((state) => state.search);
 
-    const toggleAlbum = (albumId) => {
-      setExpandedAlbumId(prevId => (prevId === albumId ? null : albumId));
-    };
+  // Extraer datos de los resultados del searchSlice
+  const artist = results?.artist || null;
+  const albums = results?.albums || [];
+  const songsByAlbum = results?.allSongs || {};
 
-    const handleAddToLibrary = (song, album) => {
-      const songData = {
-        id: song.id,
-        title: song.name,
-        artist: song.artists[0]?.name || "Desconocido",
-        album: {
-          name: album.name,
-          images: album.images,
-        },
-      };
+  const handleToggleAlbum = (albumId) => {
+    setExpandedAlbumId(prevId => (prevId === albumId ? null : albumId));
+  };
 
-      dispatch(addSong(songData));
-
-      const isSongInLibrary = (songId) => {
+  const handleAddToLibrary = (song, album) => {
+    // Verificar si la canción ya existe ANTES de agregarla
+    const isSongInLibrary = (songId) => {
       return library.some((item) => item.id === songId);
-      };
-      if (isSongInLibrary(song.id)) {
-        setModalSongAlreadyAdded(true);
-        setTimeout(() => setModalSongAlreadyAdded(false), 2000);
-        return;
-      }
-      setModalSongAdded(true);
-      setTimeout(() => setModalSongAdded(false), 2000);
+    };
+    
+    if (isSongInLibrary(song.id)) {
+      setModalSongAlreadyAdded(true);
+      setTimeout(() => setModalSongAlreadyAdded(false), 2000);
+      return;
+    }
+
+    const songData = {
+      id: song.id,
+      title: song.name,
+      artist: song.artists[0]?.name || "Desconocido",
+      album: {
+        name: album.name,
+        images: album.images,
+      },
     };
 
+    dispatch(addSong(songData));
+    setModalSongAdded(true);
+    setTimeout(() => setModalSongAdded(false), 2000);
+  };
 
   return (
     <Main>
@@ -77,6 +79,12 @@ const SearchResults = ({
         overlayClassName="modal-overlay">
         <p>La canción ya esta en tu biblioteca</p>
       </Modal>
+      {loading && (
+        <Spinner>
+          <p>Buscando música...</p>
+          <div></div>
+        </Spinner>
+      )}
       {error && <p>{error}</p>}
 
       {artist && (
@@ -90,7 +98,7 @@ const SearchResults = ({
           {albums.map((album) => (
             <Album key={album.id} type={album.album_type}>
               <Ribbon type={album.album_type}>{album.album_type.toUpperCase()}</Ribbon>
-              <AlbumHeader onClick={() => toggleAlbum(album.id)}>
+              <AlbumHeader onClick={() => handleToggleAlbum(album.id)}>
                 <AlbumCover
                   src={album.images[0]?.url}
                   alt={album.name}
